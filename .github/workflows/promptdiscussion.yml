@@ -49,6 +49,7 @@ jobs:
         uses: sidharth-14/labelsetting@main
         with:
            PAT: ${{ secrets.GITHUB_TOKEN }} 
+           disc_labels: ${{ needs.get_info.outputs.disc_labels }}
 
   Blurb_Discussion:
     if: needs.get_info.outputs.prompt_validation == 'valid'
