@@ -9,7 +9,7 @@ jobs:
   get_info:
     if: >-
       github.event.discussion.category.name == 'Prompt'
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     outputs:
       prompt_validation: ${{ steps.prompt_validation.outputs.validation }}
       disc_body: ${{ steps.prompt.outputs.disc_body }}
@@ -42,7 +42,7 @@ jobs:
         id: label_id
         with:
           PAT: ${{ secrets.GITHUB_TOKEN }}
-          disc_labels: ${{ steps.prompt.outputs.disc_labels }}
+          disc_labels: ${{ steps.prompt.outputs.disc_labels }}    
 
   Blurb_Discussion:
     if: needs.get_info.outputs.prompt_validation == 'valid' 
