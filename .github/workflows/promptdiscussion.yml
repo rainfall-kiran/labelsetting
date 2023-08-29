@@ -38,6 +38,7 @@ jobs:
 
   Get_Labels:
     runs-on: ubuntu-latest
+    needs: get_info
     outputs:
       labels: ${{ steps.fetch-labels.outputs.labels }}
     steps:
