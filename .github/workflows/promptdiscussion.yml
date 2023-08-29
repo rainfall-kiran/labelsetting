@@ -9,14 +9,16 @@ jobs:
   get_info:
     if: >-
       github.event.discussion.category.name == 'Prompt'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       prompt_validation: ${{ steps.prompt_validation.outputs.validation }}
       disc_body: ${{ steps.prompt.outputs.disc_body }}
       disc_title: ${{ steps.prompt.outputs.disc_title }}
       repo_ID: ${{ steps.prompt.outputs.repo_ID }}
       disc_labels: ${{ steps.prompt.outputs.disc_labels }}
-      disc_ID: ${{ steps.prompt.outputs.disc_ID }}
+      disc_ID : ${{ steps.prompt.outputs.disc_ID }}
+      labels_ID : ${{ steps.label_id.outputs.label_id }}
+      disc_num : ${{ steps.prompt.outputs.disc_num }}
       
     steps:
       - name: Checkout repository
@@ -44,15 +46,10 @@ jobs:
           disc_labels: ${{ steps.prompt.outputs.disc_labels }}    
 
   Blurb_Discussion:
-    if: needs.get_info.outputs.prompt_validation == 'valid'
+    if: needs.get_info.outputs.prompt_validation  == 'valid' 
     runs-on: ubuntu-latest
-    needs: [get_info, Get_Labels]
+    needs: get_info
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
-        
-      - name: conditional test
-        run: echo "hello team"
 
       - name: Use Chatgpt Api
         id: chatgpt
@@ -74,4 +71,27 @@ jobs:
           body: ${{ steps.chatgpt.outputs.body }}
           repository-id: ${{ needs.get_info.outputs.repo_ID }}
           category-id: DIC_kwDOKIIfcc4CYvYw
-          labels: ${{ needs.Get_Labels.outputs.labels }} # Use the matched labels
+          
+      - run: |
+          echo "${{ steps.create-discussion.outputs.discussion-id }}"
+          echo "${{ steps.create-discussion.outputs.discussion-url }}"
+
+      - name: Add label new GitHub Discussion    
+        uses: octokit/graphql-action@v2.x
+        id: add_label
+        with:
+          query: |
+            mutation {
+              addLabelsToLabelable(
+                input:{
+                  labelableId: "${{ steps.create-discussion.outputs.discussion-id }}"
+                  labelIds: ${{ needs.get_info.outputs.labels_ID }}
+                }
+              ) {
+                clientMutationId
+              }
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}    
+
+        
