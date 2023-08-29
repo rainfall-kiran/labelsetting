@@ -46,7 +46,7 @@ jobs:
         
       - name: Fetch Labels
         id: fetch-labels
-        uses: ./actions/labelsworkflow/labelsaddition
+        uses: sidharth-14/labelsetting@main
         with:
            PAT: ${{ secrets.GITHUB_TOKEN }} 
 
