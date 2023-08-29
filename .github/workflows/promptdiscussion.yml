@@ -9,7 +9,7 @@ jobs:
   get_info:
     if: >-
       github.event.discussion.category.name == 'Prompt'
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
     outputs:
       prompt_validation: ${{ steps.prompt_validation.outputs.validation }}
       disc_body: ${{ steps.prompt.outputs.disc_body }}
