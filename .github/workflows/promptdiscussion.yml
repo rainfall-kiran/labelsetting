@@ -50,32 +50,32 @@ jobs:
         with:
            PAT: ${{ secrets.GITHUB_TOKEN }} 
 
-    Blurb_Discussion:
-      if: needs.get_info.outputs.prompt_validation == 'valid'
-      runs-on: self-hosted
-      needs: get_info
-      steps:
-        - name: conditional test
-          run: echo "hello team"
+  Blurb_Discussion:
+    if: needs.get_info.outputs.prompt_validation == 'valid'
+    runs-on: self-hosted
+    needs: get_info
+    steps:
+      - name: conditional test
+        run: echo "hello team"
         
-        - name: Use Chatgpt Api
-          id: chatgpt
-          uses: ./actions/gptworkflow/gptapi
-          with:
-              api_key: ${{ secrets.API_KEY }}
-              prompt: ${{ needs.get_info.outputs.disc_body }}
+      - name: Use Chatgpt Api
+        id: chatgpt
+        uses: ./actions/gptworkflow/gptapi
+        with:
+          api_key: ${{ secrets.API_KEY }}
+          prompt: ${{ needs.get_info.outputs.disc_body }}
         
-        - name: Debug Labels
-          run: echo "Labels:${{ needs.get_info.outputs.disc_labels }}"  
+      - name: Debug Labels
+        run: echo "Labels:${{ needs.get_info.outputs.disc_labels }}"  
         
-        - name: Create a new GitHub Discussion
-          id: create-discussion
-          uses: abirismyname/create-discussion@v1.1.0
-          env:
-            GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-            with:
-                title: ${{ needs.get_info.outputs.disc_title }}
-                body: ${{ steps.chatgpt.outputs.body }}
-                repository-id: ${{ needs.get_info.outputs.repo_ID }}
-                category-id: DIC_kwDOKIIfcc4CYvYw
-         
+      - name: Create a new GitHub Discussion
+        id: create-discussion
+        uses: abirismyname/create-discussion@v1.1.0
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          title: ${{ needs.get_info.outputs.disc_title }}
+          body: ${{ steps.chatgpt.outputs.body }}
+          repository-id: ${{ needs.get_info.outputs.repo_ID }}
+          category-id: DIC_kwDOKIIfcc4CYvYw
+          labels: ${{ needs.Get_Labels.outputs.labels }} # Use the matched labels
