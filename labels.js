@@ -1,8 +1,8 @@
 const axios = require('axios');
 
-const repoOwner = 'rainfall-one';
-const repoName = 'gitops-test';
-const token = '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'; // Replace with your GitHub token
+const repoOwner = 'rainfall-kiran';
+const repoName = 'labelsetting';
+const token = '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 '; // Replace with your GitHub token
 
 const headers = {
   Accept: 'application/vnd.github.v3+json',

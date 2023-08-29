@@ -1,8 +1,8 @@
 name: Get Labels Action
 description: Fetches labels from a GitHub repository
-input:  
-  PAT:    
-    description: "GitHub repository token"   
+input:
+  PAT:
+    description: "GitHub repository token"
     required: true
 runs:
   using: 'node16'
