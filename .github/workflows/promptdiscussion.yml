@@ -71,22 +71,22 @@ jobs:
           api_key: ${{ secrets.API_KEY }}
           prompt: ${{ needs.get_info.outputs.disc_body }}
 
-      - name: Debug Labels
-        run: |
-          echo "Labels from Repository: ${{ needs.Get_Labels.outputs.labels }}"
-          echo "Discussion Labels: ${{ needs.get_info.outputs.disc_labels }}"
+      # - name: Debug Labels
+      #   run: |
+      #     echo "Labels from Repository: ${{ needs.Get_Labels.outputs.labels }}"
+      #     echo "Discussion Labels: ${{ needs.get_info.outputs.disc_labels }}"
           
-          labels="${{ needs.Get_Labels.outputs.labels }}"
-          discussion_labels="${{ needs.get_info.outputs.disc_labels }}"
+      #     labels="${{ needs.Get_Labels.outputs.labels }}"
+      #     discussion_labels="${{ needs.get_info.outputs.disc_labels }}"
           
-          for label in $labels; do
-            for discussion_label in $discussion_labels; do
-              if [ "$label.name" == "$discussion_label" ]; then
-                label_id=$(echo "$label" | jq -r '.id')
-                echo "Label '$discussion_label' found with ID: $label_id"
-              fi
-            done
-          done
+      #     for label in $labels; do
+      #       for discussion_label in $discussion_labels; do
+      #         if [ "$label.name" == "$discussion_label" ]; then
+      #           label_id=$(echo "$label" | jq -r '.id')
+      #           echo "Label '$discussion_label' found with ID: $label_id"
+      #         fi
+      #       done
+      #     done
 
       - name: Create a new GitHub Discussion
         id: create-discussion
